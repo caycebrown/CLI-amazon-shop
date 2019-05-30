@@ -13,11 +13,11 @@ var connection = mysql.createConnection({
   connection.connect();
    
 function makeListing(data){
-    console.log(`\n------------------
-                Item Number: ${data.item_id}\n
-                Item: ${data.product_name}\n
-                Price: ${data.price}\n
-                ------------------`);
+    console.log(`------------------
+Item Number: ${data.item_id}
+Item: ${data.product_name}
+Price: ${data.price}
+------------------\n`);
 };   
 
 idArray = [];//Will be used to select items for purchase by item_id via inquirer prompt
@@ -31,7 +31,7 @@ connection.query('SELECT item_id from products', function (err, results){
     };
 });
 
-console.log('Welcome to the bamazon shop!\n');
+console.log('\nWelcome to the bamazon shop!\n');
 
 
 //Creates a listing for each product in the DB
