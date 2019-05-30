@@ -1,28 +1,51 @@
 var mysql = require("mysql");
 
+var inquirer = require("inquirer");
+
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
     password : 'password',
-    database : 'test_db',
+    database : 'bamazon_DB',
     port: 3306,
   });
    
   connection.connect();
    
-  connection.query('SELECT * from testtable', function (error, results) {
-    if (error) throw error;
-    console.log('The info you requested:' + results[0].product);
-  });
-   
-  connection.end();
+function makeListing(data){
+    console.log(`\n------------------
+                Item Number: ${data.item_id}\n
+                Item: ${data.product_name}\n
+                Price: ${data.price}\n
+                ------------------`);
+};   
 
-var inquirer = require("inquirer");
+idArray = [];//Will be used to select items for purchase by item_id via inquirer prompt
+
+
+//Populates idArray with appropriate item_ids for products in DB
+connection.query('SELECT item_id from products', function (err, results){
+    if (err) throw (err);
+    for (i = 0; i < results.length; i++){
+        idArray.push(results[i].item_id);
+    };
+});
 
 console.log('Welcome to the bamazon shop!\n');
 
-idArray = [1,2,3,4,5]//need to poplulate this array with id's from DB
 
+//Creates a listing for each product in the DB
+connection.query('SELECT * from products', function (error, results) {
+    if (error) throw error;
+    results.map(makeListing);
+    purchase();
+  });
+
+
+
+//=====================================================================
+//Initial Prompt For User Interaction With Application
+//=====================================================================
 function purchase(){
 
     inquirer.prompt([
@@ -34,7 +57,6 @@ function purchase(){
         }
     ]).then(function(response){
         console.log(response.selectItem);
-        console.log('your 1st prompt is working\n');
         
         inquirer.prompt([
             {
@@ -43,7 +65,6 @@ function purchase(){
                 name: "quantity"
             }]).then(function(response){
                 console.log(response.quantity);
-                console.log('your 2nd prompt is working');
 
                 inquirer.prompt([
                     {
@@ -53,11 +74,10 @@ function purchase(){
                     }]).then(function(response){
                         if (response.runAgain){
                             purchase();}
+                        connection.end();
                     });
             });
     });
 
 };
 
-
-//purchase();
