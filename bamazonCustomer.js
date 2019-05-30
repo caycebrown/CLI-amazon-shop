@@ -1,5 +1,22 @@
 var mysql = require("mysql");
 
+var connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : 'password',
+    database : 'test_db',
+    port: 3306,
+  });
+   
+  connection.connect();
+   
+  connection.query('SELECT * from testtable', function (error, results) {
+    if (error) throw error;
+    console.log('The info you requested:' + results[0].product);
+  });
+   
+  connection.end();
+
 var inquirer = require("inquirer");
 
 console.log('Welcome to the bamazon shop!\n');
@@ -43,4 +60,4 @@ function purchase(){
 };
 
 
-purchase();
+//purchase();
