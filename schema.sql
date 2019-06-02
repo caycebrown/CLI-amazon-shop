@@ -11,3 +11,7 @@ CREATE TABLE products (
 );
 
 
+--The below sytax can be used to populate the table with data, simply update the 4 fields with your desired values.
+
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES('product1', 'electronics', 49.99, 25);
