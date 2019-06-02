@@ -84,13 +84,13 @@ function quantity(){
                 if (purchaseQuant <= stockQuant){
                     newQuant = (stockQuant - purchaseQuant);
                     total = purchaseQuant * price;
-                    console.log('\nYour total is: $' + price);
+                    console.log('\nYour total is: $' + price + '\n');
                     complete();
 
 
                     
                 }else {
-                console.log('Insufficient quantity available please update quantity');
+                console.log('\nInsufficient quantity available please update quantity');
                 quantity();
                 };
             });
