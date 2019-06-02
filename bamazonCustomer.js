@@ -38,7 +38,7 @@ console.log('\nWelcome to the bamazon shop!\n');
 connection.query('SELECT * from products', function (error, results) {
     if (error) throw error;
     results.map(makeListing);
-    purchase();
+    selectItem();
   });
 
 
@@ -46,7 +46,7 @@ connection.query('SELECT * from products', function (error, results) {
 //=====================================================================
 //Initial Prompt For User Interaction With Application
 //=====================================================================
-function purchase(){
+function selectItem(){
 
     inquirer.prompt([
         {
@@ -57,27 +57,65 @@ function purchase(){
         }
     ]).then(function(response){
         console.log(response.selectItem);
-        
-        inquirer.prompt([
-            {
-                type: "input",
-                message: "Enter the quantity you would like to purchase:",
-                name: "quantity"
-            }]).then(function(response){
-                console.log(response.quantity);
+        itemID = response.selectItem;
+        quantity();
+    });
+};
 
-                inquirer.prompt([
-                    {
-                        type: "confirm",
-                        message: "Would you like to make another purchase?",
-                        name: "runAgain"
-                    }]).then(function(response){
-                        if (response.runAgain){
-                            purchase();}
-                        connection.end();
-                    });
+
+function quantity(){
+
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter the quantity you would like to purchase:",
+            name: "quantity"
+        }
+    ]).then(function(response){
+            
+            purchaseQuant = parseInt(response.quantity);
+
+            connection.query('SELECT * from products where item_id = ?', [itemID], function(err, res){
+                if (err) throw (err);
+                
+                stockQuant = res[0].stock_quantity;
+                price = res[0].price;
+                console.log('\nAvailable quantity: ' + stockQuant);
+                
+                if (purchaseQuant <= stockQuant){
+                    newQuant = (stockQuant - purchaseQuant);
+                    total = purchaseQuant * price;
+                    console.log('\nYour total is: $' + price);
+                    complete();
+
+
+                    
+                }else {
+                console.log('Insufficient quantity available please update quantity');
+                quantity();
+                };
             });
     });
 
+};
+
+
+
+function complete(){
+    connection.query('UPDATE products SET stock_quantity = ? WHERE item_id = ?', [newQuant, itemID], function(err, res){
+        if (err) throw (err)
+        console.log(res);
+    });
+    
+    /*inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Would you like to make another purchase?",
+            name: "runAgain"
+        }]).then(function(response){
+            if (response.runAgain){selectItem();
+            
+            }else {connection.end();}
+        });*/
 };
 
