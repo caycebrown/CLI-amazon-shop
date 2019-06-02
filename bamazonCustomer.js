@@ -56,7 +56,6 @@ function selectItem(){
             name: "selectItem"
         }
     ]).then(function(response){
-        console.log(response.selectItem);
         itemID = response.selectItem;
         quantity();
     });
@@ -104,10 +103,9 @@ function quantity(){
 function complete(){
     connection.query('UPDATE products SET stock_quantity = ? WHERE item_id = ?', [newQuant, itemID], function(err, res){
         if (err) throw (err)
-        console.log(res);
     });
     
-    /*inquirer.prompt([
+    inquirer.prompt([
         {
             type: "confirm",
             message: "Would you like to make another purchase?",
@@ -116,6 +114,6 @@ function complete(){
             if (response.runAgain){selectItem();
             
             }else {connection.end();}
-        });*/
+        });
 };
 
