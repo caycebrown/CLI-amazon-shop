@@ -17,6 +17,7 @@ function makeListing(data){
 Item Number: ${data.item_id}
 Item: ${data.product_name}
 Price: ${data.price}
+Available Quantity: ${data.stock_quantity}
 ------------------\n`);
 };   
 
@@ -79,18 +80,18 @@ function quantity(){
                 
                 stockQuant = res[0].stock_quantity;
                 price = res[0].price;
-                console.log('\nAvailable quantity: ' + stockQuant);
                 
                 if (purchaseQuant <= stockQuant){
                     newQuant = (stockQuant - purchaseQuant);
                     total = purchaseQuant * price;
-                    console.log('\nYour total is: $' + price + '\n');
+                    console.log('\nYour total is: $' + total + '\n');
                     complete();
 
 
                     
                 }else {
                 console.log('\nInsufficient quantity available please update quantity');
+                console.log('\nAvailable quantity: ' + stockQuant);
                 quantity();
                 };
             });
