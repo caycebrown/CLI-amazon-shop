@@ -64,11 +64,22 @@ var connection = mysql.createConnection({
   });
   ```
   
+Inside of `createConnection` the value for `password` should be the password you created when setting up MySQL. If you did not set a password, there is a chance that the program defaulted to a blank password. In this case, enter empty quotes ->  ''  for the `password` value.
+
   You want to make sure that these settings match the connection settings from the MySQL workbench connection you setup earlier.
   * **IMPORTANT NOTE** *It is not recommended to push code to GitHub that includes your MySQL password if you have anything at all that needs to be kept secure in MySQL*. If you want to push code to Github, you can simply enter a dummy password in the connection settings before you push. Of course there are also alternative methods for keeping your password safe, but I will not cover those here at the moment.
 
 If you are unsure about the connection settings you previously setup - check them by clicking 'database' > 'manage connections' in MySQL workbench. It should bring up a window resembling this:
 
+![manage connetctions](MySQL_connections.PNG)
+
+Your hostname setting should appear as - 127.0.0.1
+
+Lastly you will need to open up your terminal of choice and navigate into the folder where your cloned project resides. Once there, run the command `npm install`. This will install all necessary dependencies automatically for you. 
+
+Once this is complete, you should be ready to run the program! To do so - run the command `node bamazonCustomer.js`.
+
+**Feel free to experiment and build upon this application if you wish, and have fun!**
  
   
   
